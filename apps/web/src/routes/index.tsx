@@ -24,7 +24,7 @@ function App() {
   const { health } = Route.useLoaderData()
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-slate-900 via-slate-800 to-slate-900">
       <div className="text-center">
         <h1 className="mb-8 text-4xl font-bold text-white">
           TanStack Start + Fastify
@@ -39,6 +39,11 @@ function App() {
           <p className="mt-2 text-sm text-gray-500">
             Response: {JSON.stringify(health)}
           </p>
+        </div>
+        <div className="mt-6">
+          <a href="/ping" className="text-cyan-400 hover:underline">
+            Go to Pings →
+          </a>
         </div>
       </div>
     </div>
