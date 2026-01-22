@@ -2,7 +2,14 @@
   "name": "fullstack",
   "version": "1.0.0",
   "scripts": {
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "docker:up": "docker compose -f docker/docker-compose.yml up -d",
+    "docker:down": "docker compose -f docker/docker-compose.yml down",
+    "docker:logs": "docker compose -f docker/docker-compose.yml logs -f",
+    "docker:up:all": "docker compose -f docker/docker-compose.yml --profile tools up -d",
+    "docker:reset": "docker compose -f docker/docker-compose.yml down -v && docker compose -f docker/docker-compose.yml up -d",
+    "db:push": "npm run db:push -w @fullstack/db",
+    "db:studio": "npm run db:studio -w @fullstack/db"
   },
   "workspaces": [
     "apps/*",
