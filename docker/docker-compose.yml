@@ -1,3 +1,5 @@
+name: delulu-fullstack
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -21,6 +23,43 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - fullstack-network
+
+  api:
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+    container_name: fullstack-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-fullstack_dev}
+    ports:
+      - '${API_PORT:-3000}:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - fullstack-network
+
+  web:
+    build:
+      context: ..
+      dockerfile: apps/web/Dockerfile
+    container_name: fullstack-web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      API_URL: http://api:3000
+      NITRO_HOST: 0.0.0.0
+      NITRO_PORT: 5173
+      PORT: 5173
+    ports:
+      - '${WEB_PORT:-5173}:5173'
+    depends_on:
+      - api
     networks:
       - fullstack-network
 
