@@ -1,11 +1,7 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { useState } from 'react'
-
-type Ping = {
-  id: number
-  createdAt: string
-}
+import type { Ping } from '@fullstack/db'
 
 const apiUrl = process.env.API_URL || 'http://localhost:3000'
 
