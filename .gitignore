@@ -12,3 +12,6 @@ dist
 # IDE
 .idea
 .vscode
+
+# Drizzle
+packages/db/drizzle
