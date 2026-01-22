@@ -4,6 +4,8 @@
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint .",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "pass": "npm run format && npm run lint && npm run typecheck",
     "docker:up": "docker compose -f docker/docker-compose.yml up -d",
     "docker:down": "docker compose -f docker/docker-compose.yml down",
     "docker:logs": "docker compose -f docker/docker-compose.yml logs -f",
