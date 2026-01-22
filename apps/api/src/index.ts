@@ -63,7 +63,20 @@ const shutdown = async (signal: string) => {
   process.exit(0)
 }
 
-process.on('SIGINT', () => shutdown('SIGINT'))
-process.on('SIGTERM', () => shutdown('SIGTERM'))
+process.on('SIGINT', () => {
+  void shutdown('SIGINT').catch((err) => {
+    fastify.log.error(err)
+    process.exit(1)
+  })
+})
+process.on('SIGTERM', () => {
+  void shutdown('SIGTERM').catch((err) => {
+    fastify.log.error(err)
+    process.exit(1)
+  })
+})
 
-start()
+void start().catch((err) => {
+  fastify.log.error(err)
+  process.exit(1)
+})

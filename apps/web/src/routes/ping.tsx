@@ -54,7 +54,7 @@ function PingPage() {
     setIsLoading(true)
     try {
       await createPing()
-      router.invalidate()
+      await router.invalidate()
     } finally {
       setIsLoading(false)
     }
@@ -64,7 +64,7 @@ function PingPage() {
     setIsLoading(true)
     try {
       await deletePing({ data: id })
-      router.invalidate()
+      await router.invalidate()
     } finally {
       setIsLoading(false)
     }
@@ -81,7 +81,9 @@ function PingPage() {
           <div className="mb-4 flex items-center justify-between">
             <span className="text-gray-300">{pings.length} ping(s)</span>
             <button
-              onClick={handleCreate}
+              onClick={() => {
+                void handleCreate()
+              }}
               disabled={isLoading}
               className="rounded-lg bg-cyan-600 px-4 py-2 font-medium text-white transition-colors hover:bg-cyan-700 disabled:opacity-50"
             >
@@ -105,7 +107,9 @@ function PingPage() {
                     </span>
                   </div>
                   <button
-                    onClick={() => handleDelete(ping.id)}
+                    onClick={() => {
+                      void handleDelete(ping.id)
+                    }}
                     disabled={isLoading}
                     className="rounded px-3 py-1 text-red-400 transition-colors hover:bg-red-500/20 disabled:opacity-50"
                   >
