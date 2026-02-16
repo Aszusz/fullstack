@@ -5,20 +5,24 @@ A modern fullstack monorepo demonstrating best practices with TanStack Start, Fa
 ## Tech Stack
 
 **Frontend (Web)**
+
 - TanStack Start with React 19
 - TanStack Router (file-based routing)
 - Tailwind CSS v4
 - Vite
 
 **Backend (API)**
+
 - Fastify v5
 - TypeScript
 
 **Database**
+
 - PostgreSQL 16
 - Drizzle ORM
 
 **Infrastructure**
+
 - Docker & Docker Compose
 - npm workspaces
 
@@ -44,21 +48,25 @@ fullstack/
 ## Getting Started
 
 1. **Clone and install dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Configure environment**
+
    ```bash
    cp .env.example .env
    ```
 
 3. **Start the database**
+
    ```bash
    npm run docker:up
    ```
 
 4. **Push the database schema**
+
    ```bash
    npm run db:push
    ```
@@ -72,28 +80,28 @@ fullstack/
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run format` | Format code with Prettier |
-| `npm run lint` | Lint with ESLint |
-| `npm run typecheck` | Type-check all workspaces |
-| `npm run pass` | Run format, lint, and typecheck |
-| `npm run docker:up` | Start PostgreSQL |
-| `npm run docker:down` | Stop all services |
+| Command                 | Description                          |
+| ----------------------- | ------------------------------------ |
+| `npm run format`        | Format code with Prettier            |
+| `npm run lint`          | Lint with ESLint                     |
+| `npm run typecheck`     | Type-check all workspaces            |
+| `npm run pass`          | Run format, lint, and typecheck      |
+| `npm run docker:up`     | Start PostgreSQL                     |
+| `npm run docker:down`   | Stop all services                    |
 | `npm run docker:up:all` | Start all services including pgAdmin |
-| `npm run docker:reset` | Reset database and restart |
-| `npm run db:push` | Push schema to database |
-| `npm run db:studio` | Open Drizzle Studio |
+| `npm run docker:reset`  | Reset database and restart           |
+| `npm run db:push`       | Push schema to database              |
+| `npm run db:studio`     | Open Drizzle Studio                  |
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/health` | Health check with DB status |
-| GET | `/pings` | List all pings |
-| GET | `/pings/:id` | Get ping by ID |
-| POST | `/pings` | Create a new ping |
-| DELETE | `/pings/:id` | Delete a ping |
+| Method | Endpoint     | Description                 |
+| ------ | ------------ | --------------------------- |
+| GET    | `/health`    | Health check with DB status |
+| GET    | `/pings`     | List all pings              |
+| GET    | `/pings/:id` | Get ping by ID              |
+| POST   | `/pings`     | Create a new ping           |
+| DELETE | `/pings/:id` | Delete a ping               |
 
 ## Environment Variables
 

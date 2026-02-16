@@ -1,4 +1,5 @@
 import js from '@eslint/js'
+import { fixupPluginRules } from '@eslint/compat'
 import globals from 'globals'
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
 import pluginReact from 'eslint-plugin-react'
@@ -45,9 +46,9 @@ export default defineConfig([
   {
     files: ['**/*.{jsx,tsx}'],
     plugins: {
-      react: pluginReact,
+      react: fixupPluginRules(pluginReact),
       'react-hooks': pluginReactHooks,
-      'jsx-a11y': pluginJsxA11y,
+      'jsx-a11y': fixupPluginRules(pluginJsxA11y),
     },
     rules: {
       ...pluginReact.configs.flat.recommended.rules,
