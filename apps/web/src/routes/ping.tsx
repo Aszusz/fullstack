@@ -2,6 +2,7 @@ import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { useState } from 'react'
 import type { Ping } from '@fullstack/db'
+import * as tid from '../../../../e2e/test-ids/ping'
 
 const apiUrl = process.env.API_URL || 'http://localhost:3000'
 
@@ -75,12 +76,15 @@ function PingPage() {
 
         <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-6 backdrop-blur-sm">
           <div className="mb-4 flex items-center justify-between">
-            <span className="text-gray-300">{pings.length} ping(s)</span>
+            <span className="text-gray-300" data-testid={tid.PING_COUNT}>
+              {pings.length} ping(s)
+            </span>
             <button
               onClick={() => {
                 void handleCreate()
               }}
               disabled={isLoading}
+              data-testid={tid.ADD_PING}
               className="rounded-lg bg-cyan-600 px-4 py-2 font-medium text-white transition-colors hover:bg-cyan-700 disabled:opacity-50"
             >
               {isLoading ? '...' : 'Add Ping'}
@@ -88,12 +92,18 @@ function PingPage() {
           </div>
 
           {pings.length === 0 ? (
-            <p className="py-8 text-center text-gray-500">No pings yet</p>
+            <p
+              className="py-8 text-center text-gray-500"
+              data-testid={tid.EMPTY_STATE}
+            >
+              No pings yet
+            </p>
           ) : (
-            <ul className="space-y-2">
+            <ul className="space-y-2" data-testid={tid.PING_LIST}>
               {pings.map((ping) => (
                 <li
                   key={ping.id}
+                  data-testid={tid.pingItem(ping.id)}
                   className="flex items-center justify-between rounded-lg border border-slate-600 bg-slate-700/50 p-3"
                 >
                   <div>
@@ -107,6 +117,7 @@ function PingPage() {
                       void handleDelete(ping.id)
                     }}
                     disabled={isLoading}
+                    data-testid={tid.deletePing(ping.id)}
                     className="rounded px-3 py-1 text-red-400 transition-colors hover:bg-red-500/20 disabled:opacity-50"
                   >
                     Delete

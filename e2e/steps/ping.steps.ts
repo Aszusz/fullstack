@@ -1,63 +1,60 @@
 import { expect } from '@playwright/test'
 import { createBdd } from 'playwright-bdd'
+import * as tid from '../test-ids/ping'
 
 const { Given, When, Then } = createBdd()
 
-type Ping = { id: number; createdAt: string }
+let lastPingId: number
 
-let lastPing: Ping
-let createdPings: Ping[]
-let pingsResponse: Ping[]
-
-When('I create a ping', async ({ request }) => {
-  const res = await request.post('/pings')
-  expect(res.status()).toBe(201)
-  lastPing = (await res.json()) as Ping
+Given('I am on the ping page', async ({ page }) => {
+  await page.goto('/ping')
+  await page.getByTestId(tid.PING_COUNT).waitFor()
 })
 
-Then('I should see the new ping with a timestamp', () => {
-  expect(lastPing.id).toBeDefined()
-  expect(lastPing.createdAt).toBeDefined()
+When('I add a ping', async ({ page }) => {
+  const countBefore = await page
+    .getByTestId(tid.PING_LIST)
+    .locator('li')
+    .count()
+
+  await page.getByTestId(tid.ADD_PING).click()
+  await expect(page.getByTestId(tid.PING_LIST).locator('li')).toHaveCount(
+    countBefore + 1
+  )
+
+  const lastItem = page.getByTestId(tid.PING_LIST).locator('li').last()
+  const testId = (await lastItem.getAttribute('data-testid'))!
+  lastPingId = Number(testId.replace('ping-item-', ''))
 })
 
-When('I look up that ping', async ({ request }) => {
-  const res = await request.get(`/pings/${lastPing.id}`)
-  expect(res.status()).toBe(200)
-  lastPing = (await res.json()) as Ping
-})
-
-Then('I should find the same ping', () => {
-  expect(lastPing.id).toBeDefined()
-  expect(lastPing.createdAt).toBeDefined()
-})
-
-Given('I have created {int} pings', async ({ request }, count: number) => {
-  createdPings = []
+When('I add {int} pings', async ({ page }, count: number) => {
   for (let i = 0; i < count; i++) {
-    const res = await request.post('/pings')
-    expect(res.status()).toBe(201)
-    createdPings.push((await res.json()) as Ping)
+    const before = await page.getByTestId(tid.PING_LIST).locator('li').count()
+    await page.getByTestId(tid.ADD_PING).click()
+    await expect(page.getByTestId(tid.PING_LIST).locator('li')).toHaveCount(
+      before + 1
+    )
   }
 })
 
-When('I browse the ping history', async ({ request }) => {
-  const res = await request.get('/pings')
-  expect(res.status()).toBe(200)
-  pingsResponse = (await res.json()) as Ping[]
+When('I delete the last ping', async ({ page }) => {
+  await page.getByTestId(tid.deletePing(lastPingId)).click()
+  await expect(page.getByTestId(tid.pingItem(lastPingId))).toHaveCount(0)
 })
 
-Then('I should see all {int} pings in the list', ({}, count: number) => {
-  const ids = createdPings.map((p) => p.id)
-  const found = pingsResponse.filter((p) => ids.includes(p.id))
-  expect(found).toHaveLength(count)
+Then('I should see the new ping in the list', async ({ page }) => {
+  await expect(page.getByTestId(tid.pingItem(lastPingId))).toBeVisible()
 })
 
-When('I delete that ping', async ({ request }) => {
-  const res = await request.delete(`/pings/${lastPing.id}`)
-  expect(res.status()).toBe(204)
-})
+Then(
+  'I should see {int} pings in the list',
+  async ({ page }, count: number) => {
+    await expect(page.getByTestId(tid.PING_LIST).locator('li')).toHaveCount(
+      count
+    )
+  }
+)
 
-Then('that ping should no longer exist', async ({ request }) => {
-  const res = await request.get(`/pings/${lastPing.id}`)
-  expect(res.status()).toBe(404)
+Then('that ping should be gone from the list', async ({ page }) => {
+  await expect(page.getByTestId(tid.pingItem(lastPingId))).toHaveCount(0)
 })
