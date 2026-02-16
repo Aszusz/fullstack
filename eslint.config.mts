@@ -19,6 +19,7 @@ export default defineConfig([
       '**/.next/**',
       '**/out/**',
       'eslint.config.mts',
+      'e2e/generated/**',
     ],
   },
   {
@@ -35,6 +36,7 @@ export default defineConfig([
     languageOptions: {
       parserOptions: {
         project: [
+          './tsconfig.eslint.json',
           './apps/api/tsconfig.eslint.json',
           './apps/web/tsconfig.eslint.json',
           './packages/db/tsconfig.eslint.json',
